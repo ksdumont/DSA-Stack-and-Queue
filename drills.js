@@ -1,5 +1,6 @@
 const Stack = require("./Stack");
 const Queue = require("./Queue");
+const DoubleQueue = require("./DoubleQueue");
 
 //1. Create a stack class
 const starTrek = new Stack();
@@ -162,5 +163,171 @@ console.log(display(stackToSort));
 console.log(sortStack(stackToSort));
 
 //6. Create a queue using Singly linked list
+const starTrekQ = new Queue();
 
+starTrekQ.enqueue("Kirk");
+starTrekQ.enqueue("Spock");
+starTrekQ.enqueue("Uhura");
+starTrekQ.enqueue("Sulu");
+starTrekQ.enqueue("Checkov");
 
+const peekQ = function(queue) {
+  if (queue.first === null) {
+    return "no queue";
+  }
+  return queue.first.data;
+};
+
+console.log(peekQ(starTrekQ));
+
+const isEmptyQ = function(queue) {
+  if (queue.first === null) {
+    return true;
+  }
+  return false;
+};
+console.log(isEmptyQ(starTrekQ));
+const starTrekQ2 = new Queue();
+console.log(isEmptyQ(starTrekQ2));
+
+const displayQ = function(queue) {
+  if (queue.first === null) {
+    return "empty queue";
+  }
+  const queueArray = [];
+  let currNode = queue.first;
+  while (currNode !== null) {
+    queueArray.push(currNode.data);
+    currNode = currNode.next;
+  }
+  return queueArray;
+};
+console.log(displayQ(starTrekQ));
+
+//7. Create a queue class using Doubly linked List
+
+const starTrekDQ = new DoubleQueue();
+
+starTrekDQ.enqueue("Kirk");
+starTrekDQ.enqueue("Spock");
+starTrekDQ.enqueue("Uhura");
+starTrekDQ.enqueue("Sulu");
+starTrekDQ.enqueue("Checkov");
+starTrekDQ.dequeue();
+console.log(peekQ(starTrekDQ));
+console.log(isEmptyQ(starTrekDQ));
+
+const starTrekDQ2 = new DoubleQueue();
+console.log(isEmptyQ(starTrekDQ2));
+
+console.log(displayQ(starTrekDQ));
+
+//8. Queue implementation using a stack
+
+const stack4Q1 = new Stack();
+const stack4Q2 = new Stack();
+const enqueue = function(data) {
+  stack4Q1.push(data);
+  return `enqueued ${data}`;
+};
+const dequeue = function() {
+  if (stack4Q2.top === null) {
+    if (stack4Q1.top === null) {
+      return "Nothing to dequeue!";
+    }
+    while (stack4Q1.top !== null) {
+      stack4Q2.push(stack4Q1.pop());
+    }
+  }
+  return `dequeued ${stack4Q2.pop()}`;
+};
+console.log(enqueue(1));
+console.log(enqueue(2));
+console.log(enqueue(3));
+console.log(dequeue());
+console.log(dequeue());
+console.log(enqueue(4));
+console.log(enqueue(5));
+console.log(enqueue(6));
+console.log(dequeue());
+console.log(dequeue());
+console.log(dequeue());
+console.log(dequeue());
+console.log(dequeue());
+
+//9. Square dance pairing
+
+const males = new Queue();
+const females = new Queue();
+const squareDancePairs = [];
+
+const newDancer = function(name, gender) {
+  if (gender === "male") {
+    males.enqueue(name);
+  }
+  if (gender === "female") {
+    females.enqueue(name);
+  }
+  while (males.first !== null && females.first !== null) {
+    squareDancePairs.push(`${males.dequeue()}/${females.dequeue()}`);
+  }
+};
+newDancer("Jane", "female");
+newDancer("Frank", "male");
+newDancer("John", "male");
+newDancer("Sherlock", "male");
+newDancer("Madonna", "female");
+newDancer("David", "male");
+newDancer("Christopher", "male");
+newDancer("Beyonce", "female");
+console.log("Pairs:", squareDancePairs);
+console.log("Waiting Males:", displayQ(males));
+console.log("Waiting Females:", displayQ(females));
+
+//10. The Ophidian Bank
+
+const ophidianBank = function() {
+  const ophidianLine = new Queue();
+  ophidianLine.enqueue("Person 1");
+  ophidianLine.enqueue("Person 2");
+  ophidianLine.enqueue("Person 3");
+  ophidianLine.enqueue("Person 4");
+  ophidianLine.enqueue("Person 5");
+  ophidianLine.enqueue("Person 6");
+  ophidianLine.enqueue("Person 7");
+  ophidianLine.enqueue("Person 8");
+  ophidianLine.enqueue("Person 9");
+  ophidianLine.enqueue("Person 10");
+  console.log(displayQ(ophidianLine));
+  let currentCustomer = ophidianLine.first;
+  let time = 0;
+  while (currentCustomer !== null && time < 20) {
+    const paperwork = Math.random() >= 0.25;
+    if (paperwork === true) {
+      const howLong = Math.ceil(Math.random() * 5);
+      time += howLong;
+      console.log(
+        `${currentCustomer.value} was serviced. It took ${howLong} ${
+          howLong > 1 ? "minutes" : "minute"
+        }. ${time} ${
+          time > 1 ? "total minutes have passed." : "total minute has passed."
+        }`
+      );
+      ophidianLine.dequeue();
+    } else {
+      time += 1;
+      console.log(
+        `${
+          currentCustomer.value
+        } was missing some paperwork and had to go to the end of the line. ${time} ${
+          time > 1 ? "total minutes have passed." : "total minute has passed."
+        }`
+      );
+      ophidianLine.enqueue(ophidianLine.dequeue());
+    }
+    currentCustomer = currentCustomer.next;
+  }
+  console.log(`Here's the line after ${time} minutes:`);
+  console.log(displayQ(ophidianLine));
+};
+console.log(ophidianBank());
