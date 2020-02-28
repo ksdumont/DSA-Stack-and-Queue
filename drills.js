@@ -1,6 +1,7 @@
 const Stack = require("./Stack");
 const Queue = require("./Queue");
 
+//1. Create a stack class
 const starTrek = new Stack();
 starTrek.push("kirk");
 starTrek.push("Spock");
@@ -8,6 +9,7 @@ starTrek.push("McCoy");
 starTrek.push("Scotty");
 console.log(starTrek);
 
+//2. Useful methods for a stack
 const peek = function(stack) {
   if (stack.top === null) {
     return "Empty Stack";
@@ -41,4 +43,22 @@ const display = function(stack) {
 };
 console.log(display(starTrek));
 
+//3. Check for palindromes using a stack
+
+function is_palindrome(s) {
+  s = s.toLowerCase().replace(/[^a-zA-Z0-9]/g, "");
+  const palindromeStack = new Stack();
+  for (let character of s) {
+    palindromeStack.push(character);
+  }
+  let palindromeString = "";
+  while (!isEmpty(palindromeStack)) {
+    palindromeString += palindromeStack.pop();
+  }
+  return palindromeString === s;
+}
+console.log(is_palindrome("dad"));
+console.log(is_palindrome("A man, a plan, a canal: Panama"));
+console.log(is_palindrome("1001"));
+console.log(is_palindrome("Tauhida"));
 
